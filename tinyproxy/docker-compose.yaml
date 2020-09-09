@@ -1,0 +1,11 @@
+---
+version: '3.0'
+
+services:
+  tinyproxy:
+    image: '${IMAGE_PREFIX}/tinyproxy:${TINYPROXY_VERSION}'
+    ports:
+      - "8888:8888"
+    restart: always
+    volumes:
+      - ./tinyproxy.conf:/etc/tinyproxy/tinyproxy.conf
