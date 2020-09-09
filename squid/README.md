@@ -9,7 +9,7 @@ The packages (`libcom_err-devel krb5-devel libxml2-devel libcap-devel`) is requi
 ```bash
 .ci/build-docker.sh -w squid
 
-env SQUID_VERSION=4.13 .ci/build-docker.sh -w squid
+env SQUID_VERSION=5.0.4 .ci/build-docker.sh -w squid
 ```
 
 ## Testing
@@ -19,6 +19,8 @@ bash -c 'source squid/pre.sh; docker-compose -f squid/docker-compose.yaml up -d'
 curl --proxy http://localhost:3128 -Lv https://httpbin.org/ip
 
 bash -c 'source squid/pre.sh; docker-compose -f squid/docker-compose.yaml down -v'
+
+bash -c 'export SQUID_VERSION=5.0.4; source squid/pre.sh; docker-compose -f squid/docker-compose.yaml up -d'
 ```
 
 If you have upstream proxy, add the following in squid.conf
