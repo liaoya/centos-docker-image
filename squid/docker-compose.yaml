@@ -1,0 +1,11 @@
+---
+version: '3.0'
+
+services:
+  squid:
+    image: ${SQUID_IMAGE}
+    ports:
+      - "3128:3128"
+    restart: always
+    volumes:
+      - ./squid.conf:/usr/local/squid/etc/squid.conf

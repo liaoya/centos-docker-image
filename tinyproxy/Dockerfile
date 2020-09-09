@@ -6,6 +6,7 @@ RUN set -ex && \
     rm -fr /var/cache/yum
 
 ARG TINYPROXY_VERSION
+# hadolint ignore=DL3003
 RUN curl -sLO "https://github.com/tinyproxy/tinyproxy/releases/download/${TINYPROXY_VERSION}/tinyproxy-${TINYPROXY_VERSION}.tar.xz" && \
     tar -xf "tinyproxy-${TINYPROXY_VERSION}.tar.xz" && \
     cd "tinyproxy-${TINYPROXY_VERSION}" && \
@@ -14,7 +15,7 @@ RUN curl -sLO "https://github.com/tinyproxy/tinyproxy/releases/download/${TINYPR
 
 FROM centos:centos8.2.2004
 LABEL \
-    maintainer tom.shen@oracle.com \
+    maintainer liaoya@gmail.com \
     APP_NAME=tinyproxy
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -41,4 +42,4 @@ RUN chown -R "tinyproxy:tinyproxy" /etc/tinyproxy /run/tinyproxy /var/log/tinypr
 USER tinyproxy
 EXPOSE 8888
 WORKDIR /etc/tinyproxy
-CMD ["/usr/local/bin/tinyproxy", "-d"]
+CMD ["/usr/local/bin/tinyproxy", "-d", "-c", "/etc/tinyproxy/tinyproxy.conf"]

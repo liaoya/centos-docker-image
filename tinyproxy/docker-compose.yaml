@@ -3,7 +3,7 @@ version: '3.0'
 
 services:
   tinyproxy:
-    image: '${IMAGE_PREFIX}/tinyproxy:${TINYPROXY_VERSION}'
+    image: '${TINYPROXY_IMAGE}'
     ports:
       - "8888:8888"
     restart: always
