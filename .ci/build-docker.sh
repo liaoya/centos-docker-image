@@ -127,6 +127,22 @@ function stop_http_server() {
     pkill $(basename "${PYTHON_EXEC}") || true
 }
 
+function check_port_used() {
+    local port used
+    port=$1
+    used=0
+    if [[ $(command -v netstat) ]]; then
+        if netstat -tulpn | grep -w "${port}"; then used=1; fi
+    else
+        if [[ ! -x /tmp/busybox ]]; then
+            curl -sL https://busybox.net/downloads/binaries/1.31.0-i686-uclibc/busybox -o /tmp/busybox
+            chmod a+x /tmp/busybox
+        fi
+        if /tmp/busybox netstat -tulpn | grep -w "${port}"; then used=1; fi
+    fi
+    return ${used}
+}
+
 # We always use IP since it's accesible by container
 if [[ $(command -v hostname) ]]; then
     if hostname -f | grep -s -q "\."; then
@@ -203,7 +219,10 @@ check_dir "${WORK_DIR}"
 if [[ -f /tmp/docker_build_port ]]; then
     HTTP_PORT=$(cat /tmp/docker_build_port)
 else
-    HTTP_PORT=$((RANDOM % 10000 + 10000))
+    HTTP_PORT=${HTTP_PORT:-54321}
+    if ! check_port_used "${HTTP_PORT}"; then
+        HTTP_PORT=$((RANDOM % 10000 + 10000))
+    fi
     echo "${HTTP_PORT}" >/tmp/docker_build_port # cache the HTTP_PORT so that we can make the build-arg not change
 fi
 export HTTP_PORT

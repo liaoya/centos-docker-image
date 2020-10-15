@@ -12,6 +12,8 @@ The packages (`libcom_err-devel krb5-devel libxml2-devel libcap-devel`) is requi
 env SQUID_VERSION=5.0.4 .ci/build-docker.sh -w squid
 ```
 
+Refer <https://github.com/b4tman/docker-squid/blob/master/Dockerfile> which build latest squid for Alpine Linux
+
 ## Testing
 
 ```bash
